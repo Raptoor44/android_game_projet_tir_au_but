@@ -1,5 +1,6 @@
 package com.example.android_game_projet_tir_au_but;
 
+import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -9,80 +10,91 @@ public class Gardien {
 
     private ImageView main;
     private static int nb_instance = 0;
+    private static int nb_gardien = 1;
     private static int nb_grande = 0;
+    private static int taille = 0;
     private MainActivity mainActivity;
 
 
-    public Gardien(MainActivity mainActivity) {
+    public Gardien(MainActivity mainActivity, int multiplicateur_y ) {
 
         this.mainActivity = mainActivity;
-        main = null;
-        this.main = new ImageView(mainActivity);
-        this.main.setBackgroundResource(R.drawable.jersey_viscose_uni_couleur_noir_profond);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100, 20);
-        this.main.setLayoutParams(params);
-
-        this.main.setX(500);
-        this.main.setY(300 );
 
 
 
-        mainActivity.getFenetrePrincipale().addView(main);
+
+
+    this.main = new ImageView(mainActivity);
+    this.main.setBackgroundResource(R.drawable.jersey_viscose_uni_couleur_noir_profond);
+    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100 + taille * 10, 20);
+    this.main.setLayoutParams(params);
+
+    this.main.setX(500 + (multiplicateur_y *100));
+    this.main.setY(300 + (multiplicateur_y * 100));
+
+
+
+    mainActivity.getFenetrePrincipale().addView(main);
+
+        if (nb_grande >= 10) {
+            nb_grande = 0;
+            nb_gardien++;
+
+        }
+
 
         nb_instance++;
+
+
     }
 
-    public void remove(){
+    public void remove() {
         mainActivity.getFenetrePrincipale().removeView(main);
     }
 
-    public void setX(float x){
+    public void setX(float x) {
         main.setX(x);
     }
-    public void setY(float y){main.setY(y);
+
+    public void setY(float y) {
+        main.setY(y);
     }
 
-    public float getX(){
-        return  main.getX();
+    public float getX() {
+        return main.getX();
     }
-    public float getY(){
-        return  main.getY();
+
+    public float getY() {
+        return main.getY();
     }
 
     public ImageView getView() {
         return main;
     }
 
-    public void augmenter(){
+    public void augmenter() {
 
 
         nb_grande++;
+        taille++;
 
 
-        mainActivity.setFenetrePrincipale(null);
-
-        mainActivity.setFenetrePrincipale(mainActivity.findViewById(R.id.fenetre_principale));
-
-        for(Gardien ggg : mainActivity.getGardiens().getGardiens()){
+        Intent intent = new Intent(mainActivity.getApplicationContext(), mainActivity.getClass());
+        mainActivity.finish();
+        mainActivity.startActivity(intent);
 
 
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ggg.getView().getWidth() + 20, 20);
-            ggg.getView().setLayoutParams(params);
+    }
 
-            mainActivity.getFenetrePrincipale().addView(ggg.getView());
-        }
+    public static int getNb_gardien() {
+        return nb_gardien;
+    }
 
+    public static int getNb_grande() {
+        return nb_grande;
+    }
 
-
-
-        if(nb_grande >= 10){
-            nb_grande = 0;
-            Gardien gg = new Gardien(mainActivity);
-          mainActivity.getGardiens().add(gg);
-
-        }
-
-
-
+    public static int getNb_instance() {
+        return nb_instance;
     }
 }

@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private GestureDetectorCompat gestureDetector;
 
     //init image view
-    private  Ballon ballon;
+    private Ballon ballon;
     private RelativeLayout fenetrePrincipale;
 
     //init Thread
@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private boolean parcourt_termine = false;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,9 +81,16 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         this.bande_gauche = findViewById(R.id.id_bande_gauche);
 
         //init gardien
+
+
         gardiens = new ListGardiens();
-        Gardien gardien_1 = new Gardien(this);
-        gardiens.add(gardien_1);
+        int multiplicateur_y = 0;
+        for (int i = 0; i < Gardien.getNb_gardien(); i++) {
+            Gardien gardien_1 = new Gardien(this, multiplicateur_y);
+            gardiens.add(gardien_1);
+            multiplicateur_y++;
+        }
+
 
         //init but
         this.but = findViewById(R.id.id_but);
@@ -99,21 +105,26 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             if (thread_gardien == true) {
                 int x = 5;
 
+
+                int vitesse_differente = 0;
                 for (Gardien gardien_1 : gardiens.getGardiens()) {
                     if (parcourt_termine == false) {
-                        gardien_1.setX(gardien_1.getX() + x);
+                        gardien_1.setX(gardien_1.getX() + (x + vitesse_differente) );
                         if (gardien_1.getX() >= 1000) {
                             parcourt_termine = true;
                         }
                     } else {
-                        gardien_1.setX(gardien_1.getX() - x);
+                        gardien_1.setX(gardien_1.getX() - (x + vitesse_differente) );
                         if (gardien_1.getX() <= 0) {
                             parcourt_termine = false;
                         }
                     }
-
-
+                    int max = 10;
+                    int min = 1;
+                    int range = max - min + 1;
+                    vitesse_differente = (int) (Math.random() * range) + min;
                 }
+
             }
         }
     };
@@ -149,27 +160,23 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
                 }
                 //DETECTIONS DE BUT
-                if(isCollisionDetected(ballon.getBallon(), but)) {
+                if (isCollisionDetected(ballon.getBallon(), but)) {
                     velocityX = 0;
                     velocityY = 0;
 
 
-
+                    thread_gardien = false;
+                    thread_bouger_ballon = false;
 
                     for (Gardien gardien_1 : gardiens.getGardiens()) {
                         gardien_1.augmenter();
                     }
-                    ballon.debut();
-                    thread_gardien = false;
-                    thread_bouger_ballon = false;
+
 
                 }
             }
         }
     };
-
-
-
 
 
     @Override
@@ -230,6 +237,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         gestureDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
+
     public static boolean isCollisionDetected(View v1, View v2) {
         if (v1 == null || v2 == null) {
             Log.e("giome", "Views must not be null");
@@ -287,7 +295,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
 
 
-
     public boolean isParcourt_termine() {
         return parcourt_termine;
     }
@@ -300,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         return lancer_ballon;
     }
 
-    public void creer_ballon(){
+    public void creer_ballon() {
         ballon = new Ballon(this);
     }
 
