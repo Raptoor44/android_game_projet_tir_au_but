@@ -6,57 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/id_but"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/fenetre_principale"
-        app:srcCompat="@drawable/ic_launcher_background" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/fenetre_principale"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <RelativeLayout
+            android:id="@+id/fenetre_principale"
+            android:layout_width="411dp"
+            android:layout_height="600dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp">
 
-        <LinearLayout
+            <ImageView
+                android:id="@+id/id_but"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                app:srcCompat="@drawable/ic_launcher_background" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="324dp"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/id_bande_gauche"
+                        android:layout_width="79dp"
+                        android:layout_height="81dp"
+                        app:srcCompat="@drawable/jersey_viscose_uni_couleur_noir_profond" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="244dp"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/id_bande_droite"
+                        android:layout_width="83dp"
+                        android:layout_height="84dp"
+                        app:srcCompat="@drawable/jersey_viscose_uni_couleur_noir_profond" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
-            <FrameLayout
-                android:layout_width="324dp"
-                android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/id_score_courant"
+                android:layout_width="406dp"
+                android:layout_height="105dp"
+                android:textSize="34sp" />
+        </FrameLayout>
+    </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/id_bande_gauche"
-                    android:layout_width="79dp"
-                    android:layout_height="81dp"
-                    app:srcCompat="@drawable/jersey_viscose_uni_couleur_noir_profond" />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="244dp"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/id_bande_droite"
-                    android:layout_width="83dp"
-                    android:layout_height="84dp"
-                    app:srcCompat="@drawable/jersey_viscose_uni_couleur_noir_profond" />
-            </FrameLayout>
-
-        </LinearLayout>
-
-    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
