@@ -3,6 +3,7 @@ package com.example.android_game_projet_tir_au_but;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GestureDetectorCompat;
 
+import android.annotation.SuppressLint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,9 +32,9 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private RelativeLayout fenetrePrincipale;
 
     //init Thread
-    private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    private ScheduledExecutorService gardien = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService gardien = Executors.newScheduledThreadPool(1);
     //init activation thread
     private boolean thread_bouger_ballon = false;
     private boolean thread_gardien = false;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     //Scores
     private TextView score_courant;
-    private Score score = new Score();
+    private final Score score = new Score();
 
 
     @Override
@@ -89,12 +90,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
 
         gardiens = new ListGardiens();
-        int multiplicateur_y = 0;
-        for (int i = 0; i < Gardien.getNb_gardien(); i++) {
-            Gardien gardien_1 = new Gardien(this, multiplicateur_y);
-            gardiens.add(gardien_1);
-            multiplicateur_y++;
-        }
+
+
+        Gardien gardien_1 = new Gardien(this);
+        gardiens.add(gardien_1);
 
 
         //init but
@@ -105,34 +104,38 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         //init affichage score
         this.score_courant = findViewById(R.id.id_score_courant);
 
-        score_courant.setText(String.valueOf("Votre score actuel : "+score.getScore()));
+        actualiser_score();
 
     }
 
+
+
     public Runnable mouvement_gardien = new Runnable() {
         @Override
+
         public void run() {
-            if (thread_gardien == true) {
+            if (thread_gardien) {
+
                 int x = 5;
 
-
-                int vitesse_differente = 0;
                 for (Gardien gardien_1 : gardiens.getGardiens()) {
-                    if (parcourt_termine == false) {
-                        gardien_1.setX(gardien_1.getX() + (x + vitesse_differente));
-                        if (gardien_1.getX() >= 1000) {
-                            parcourt_termine = true;
+                    gardien_1.getView().post(() -> {
+                        int vitesse_differente = 0;
+
+                        if (!parcourt_termine) {
+                            gardien_1.setX(gardien_1.getX() + (x + vitesse_differente));
+                            if (gardien_1.getX() >= 1000) {
+                                parcourt_termine = true;
+                            }
+                        } else {
+                            gardien_1.setX(gardien_1.getX() - (x + vitesse_differente));
+                            if (gardien_1.getX() <= 0) {
+                                parcourt_termine = false;
+                            }
                         }
-                    } else {
-                        gardien_1.setX(gardien_1.getX() - (x + vitesse_differente));
-                        if (gardien_1.getX() <= 0) {
-                            parcourt_termine = false;
-                        }
-                    }
-                    int max = 10;
-                    int min = 1;
-                    int range = max - min + 1;
-                    vitesse_differente = (int) (Math.random() * range) + min;
+                    });
+
+
                 }
 
             }
@@ -143,54 +146,77 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         @Override
         public void run() {
 
-            if (thread_bouger_ballon == true) {
-                ballon.setX(ballon.getX() + velocityX);
-                ballon.setY(ballon.getY() + velocityY);
+            if (thread_bouger_ballon) {
 
 
-                //DETECTIONS DES COLISIONS DE TOUS LES GARDIENS
-                for (Gardien gardien_1 : gardiens.getGardiens()) {
-                    if (isCollisionDetected(gardien_1.getView(), ballon.getBallon())) {
-
-                        colision_non_but();
+                ballon.getView().post(() -> {
+                    ballon.setX(ballon.getX() + velocityX);
+                    ballon.setY(ballon.getY() + velocityY);
 
 
-                    }
-
-
-                }
-                //DETECTIONS DE BUT
-                if (isCollisionDetected(ballon.getBallon(), but)) {
-                    velocityX = 0;
-                    velocityY = 0;
-
-
-                    thread_gardien = false;
-                    thread_bouger_ballon = false;
-
+                    //DETECTIONS DES COLISIONS DE TOUS LES GARDIENS
                     for (Gardien gardien_1 : gardiens.getGardiens()) {
-                        gardien_1.augmenter();
+
+
+                        gardien_1.getView().post(() -> {
+                            if (isCollisionDetected(gardien_1.getView(), ballon.getView())) {
+
+                                colision_non_but();
+
+
+                            }
+                        });
+
+
                     }
 
-                    score.setScore();
+
+                    //DETECTIONS DE BUT
+                    if (isCollisionDetected(ballon.getView(), but)) {
+                        velocityX = 0;
+                        velocityY = 0;
+
+                        score.setScore();
+                        actualiser_score();
+
+                        thread_gardien = false;
+                        thread_bouger_ballon = false;
+
+                        for (Gardien gardien_1 : gardiens.getGardiens()) {
+
+                            gardien_1.getView().post(() -> {
+                                gardien_1.augmenter();
+                                colision_non_but();
+
+                            });
+
+                        }
 
 
 
 
+                    }
 
-                }
 
+                    //Detection de poteau
+                    if (isCollisionDetected(ballon.getView(), bande_gauche)) {
+                        colision_non_but();
+                    }
 
-                //Detection de poteau
-                if (isCollisionDetected(ballon.getBallon(), bande_droite)) {
-                    colision_non_but();
-                }
-                if (isCollisionDetected(ballon.getBallon(), bande_gauche)) {
-                    colision_non_but();
-                }
+                    if (isCollisionDetected(ballon.getView(), bande_droite)) {
+                        colision_non_but();
+                    }
+
+                });
+
             }
         }
     };
+    @SuppressLint("SetTextI18n")
+    private void actualiser_score() {
+        score_courant.setText("Votre score actuel : " + score.getScore());
+    }
+
 
     private void colision_non_but() {
         Log.e("co de ballon ", " x : " + ballon.getX() + " y : " + ballon.getY());
@@ -268,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     public static boolean isCollisionDetected(View v1, View v2) {
         if (v1 == null || v2 == null) {
-            Log.e("giome", "Views must not be null");
+            Log.e("information", "Views must not be null");
             throw new IllegalArgumentException("Views mut be not null");
         }
         Rect R1 = new Rect();
@@ -278,36 +304,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         return Rect.intersects(R1, R2);
     }
 
-    public GestureDetectorCompat getGestureDetector() {
-        return gestureDetector;
-    }
-
-    public ImageView getBallon() {
-        return ballon.getBallon();
-    }
-
     public RelativeLayout getFenetrePrincipale() {
         return fenetrePrincipale;
-    }
-
-    public ScheduledExecutorService getScheduler() {
-        return scheduler;
-    }
-
-    public ScheduledExecutorService getGardien() {
-        return gardien;
-    }
-
-    public boolean isThread_bouger_ballon() {
-        return thread_bouger_ballon;
-    }
-
-    public boolean isThread_gardien() {
-        return thread_gardien;
-    }
-
-    public float getVelocityX() {
-        return velocityX;
     }
 
     public float getVelocityY() {
@@ -341,6 +339,22 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     public void setFenetrePrincipale(RelativeLayout fenetrePrincipale) {
         this.fenetrePrincipale = fenetrePrincipale;
+    }
+
+    public MainActivity getMainActivity() {
+        return mainActivity;
+    }
+
+    public ImageView getBut() {
+        return but;
+    }
+
+    public TextView getScore_courant() {
+        return score_courant;
+    }
+
+    public Score getScore() {
+        return score;
     }
 
     public ListGardiens getGardiens() {

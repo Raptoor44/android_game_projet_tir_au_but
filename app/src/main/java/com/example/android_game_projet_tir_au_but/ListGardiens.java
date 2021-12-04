@@ -5,10 +5,10 @@ import java.util.List;
 
 public class ListGardiens {
 
-    private List<Gardien> gardiens;
+    private final List<Gardien> gardiens;
 
     public ListGardiens() {
-        this.gardiens = new ArrayList<Gardien>();
+        this.gardiens = new ArrayList<>();
     }
 
     public void remove(Gardien gardien){

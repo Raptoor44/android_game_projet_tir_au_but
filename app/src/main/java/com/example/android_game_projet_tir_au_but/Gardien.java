@@ -1,46 +1,75 @@
 package com.example.android_game_projet_tir_au_but;
 
-import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import java.util.concurrent.TimeUnit;
-
 public class Gardien {
 
-    private ImageView main;
+    private final ImageView main;
     private static int nb_instance = 0;
     private static int nb_gardien = 1;
     private static int nb_grande = 0;
-    private static int taille = 0;
-    private MainActivity mainActivity;
+    private final MainActivity mainActivity;
 
 
-    public Gardien(MainActivity mainActivity, int multiplicateur_y ) {
+    public Gardien(MainActivity mainActivity) {
 
         this.mainActivity = mainActivity;
 
 
+        this.main = new ImageView(mainActivity);
+        this.main.setBackgroundResource(R.drawable.jersey_viscose_uni_couleur_noir_profond);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100 + nb_instance * 10, 20);
+        this.main.setLayoutParams(params);
 
 
-
-    this.main = new ImageView(mainActivity);
-    this.main.setBackgroundResource(R.drawable.jersey_viscose_uni_couleur_noir_profond);
-    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100 + taille * 10, 20);
-    this.main.setLayoutParams(params);
-
-    this.main.setX(500 + (multiplicateur_y *100));
-    this.main.setY(300 + (multiplicateur_y * 100));
+        this.main.setY(400 + nb_gardien * 100);
 
 
+        mainActivity.getFenetrePrincipale().addView(main);
 
-    mainActivity.getFenetrePrincipale().addView(main);
 
-        if (nb_grande >= 10) {
-            nb_grande = 0;
-            nb_gardien++;
+        nb_instance++;
 
-        }
+
+    }
+    public Gardien(MainActivity mainActivity, float X) {
+
+        this.mainActivity = mainActivity;
+
+
+        this.main = new ImageView(mainActivity);
+        this.main.setBackgroundResource(R.drawable.jersey_viscose_uni_couleur_noir_profond);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100 + nb_instance * 10, 20);
+        this.main.setLayoutParams(params);
+
+
+        this.main.setY(400 + nb_gardien * 100);
+        this.main.setX(X + 50);
+
+        mainActivity.getFenetrePrincipale().addView(main);
+
+
+        nb_instance++;
+
+
+    }
+    public Gardien(MainActivity mainActivity, float Y, float X) {
+
+        this.mainActivity = mainActivity;
+
+
+        this.main = new ImageView(mainActivity);
+        this.main.setBackgroundResource(R.drawable.jersey_viscose_uni_couleur_noir_profond);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100 + nb_instance * 10, 20);
+        this.main.setLayoutParams(params);
+
+
+        this.main.setY(Y);
+        this.main.setX(X);
+
+
+        mainActivity.getFenetrePrincipale().addView(main);
 
 
         nb_instance++;
@@ -76,12 +105,19 @@ public class Gardien {
 
 
         nb_grande++;
-        taille++;
+        if (nb_grande >= 10) {
+            nb_grande = 0;
+            nb_gardien++;
+            mainActivity.getGardiens().add(new Gardien(this.mainActivity, this.getX()));
+
+        }
 
 
-        Intent intent = new Intent(mainActivity.getApplicationContext(), mainActivity.getClass());
-        mainActivity.finish();
-        mainActivity.startActivity(intent);
+        this.mainActivity.getFenetrePrincipale().removeView(this.getView());
+        mainActivity.getGardiens().add(new Gardien(this.mainActivity, this.getView().getY(), this.getView().getX()));
+
+
+        nb_instance++;
 
 
     }
