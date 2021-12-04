@@ -9,15 +9,17 @@ public class Gardien {
     private static int nb_instance = 0;
     private static int nb_gardien = 1;
     private static int nb_grande = 0;
-    private final MainActivity mainActivity;
+    private int vitesse_gardien;
+    private final Game game;
+    private boolean parcourt_termine = false;
 
 
-    public Gardien(MainActivity mainActivity) {
+    public Gardien(Game game) {
 
-        this.mainActivity = mainActivity;
+        this.game = game;
 
 
-        this.main = new ImageView(mainActivity);
+        this.main = new ImageView(game);
         this.main.setBackgroundResource(R.drawable.jersey_viscose_uni_couleur_noir_profond);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100 + nb_instance * 10, 20);
         this.main.setLayoutParams(params);
@@ -26,19 +28,20 @@ public class Gardien {
         this.main.setY(400 + nb_gardien * 100);
 
 
-        mainActivity.getFenetrePrincipale().addView(main);
+        game.getFenetrePrincipale().addView(main);
 
 
         nb_instance++;
 
 
     }
-    public Gardien(MainActivity mainActivity, float X) {
 
-        this.mainActivity = mainActivity;
+    public Gardien(Game game, float X) {
+
+        this.game = game;
 
 
-        this.main = new ImageView(mainActivity);
+        this.main = new ImageView(game);
         this.main.setBackgroundResource(R.drawable.jersey_viscose_uni_couleur_noir_profond);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100 + nb_instance * 10, 20);
         this.main.setLayoutParams(params);
@@ -47,19 +50,21 @@ public class Gardien {
         this.main.setY(400 + nb_gardien * 100);
         this.main.setX(X + 50);
 
-        mainActivity.getFenetrePrincipale().addView(main);
+        game.getFenetrePrincipale().addView(main);
 
 
         nb_instance++;
 
+        vitesse_gardien = (int) (Math.random() * 10);
 
     }
-    public Gardien(MainActivity mainActivity, float Y, float X) {
 
-        this.mainActivity = mainActivity;
+    public Gardien(Game game, float Y, float X, int vitesse_gardien, boolean termine) {
+
+        this.game = game;
 
 
-        this.main = new ImageView(mainActivity);
+        this.main = new ImageView(game);
         this.main.setBackgroundResource(R.drawable.jersey_viscose_uni_couleur_noir_profond);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100 + nb_instance * 10, 20);
         this.main.setLayoutParams(params);
@@ -69,16 +74,20 @@ public class Gardien {
         this.main.setX(X);
 
 
-        mainActivity.getFenetrePrincipale().addView(main);
+        game.getFenetrePrincipale().addView(main);
 
+        this.vitesse_gardien = vitesse_gardien;
+        this.setParcourt_termine(termine);
 
         nb_instance++;
+
+
 
 
     }
 
     public void remove() {
-        mainActivity.getFenetrePrincipale().removeView(main);
+        game.getFenetrePrincipale().removeView(main);
     }
 
     public void setX(float x) {
@@ -108,13 +117,16 @@ public class Gardien {
         if (nb_grande >= 10) {
             nb_grande = 0;
             nb_gardien++;
-            mainActivity.getGardiens().add(new Gardien(this.mainActivity, this.getX()));
+            game.getGardiens().add(new Gardien(this.game, this.getX()));
 
         }
 
 
-        this.mainActivity.getFenetrePrincipale().removeView(this.getView());
-        mainActivity.getGardiens().add(new Gardien(this.mainActivity, this.getView().getY(), this.getView().getX()));
+        this.game.getFenetrePrincipale().removeView(this.getView());
+        game.getGardiens().add(new Gardien(this.game,
+                this.getView().getY(),
+                this.getView().getX(),
+                this.vitesse_gardien, this.parcourt_termine));
 
 
         nb_instance++;
@@ -132,5 +144,17 @@ public class Gardien {
 
     public static int getNb_instance() {
         return nb_instance;
+    }
+
+    public int getVitesse_gardien() {
+        return vitesse_gardien;
+    }
+
+    public boolean isParcourt_termine() {
+        return parcourt_termine;
+    }
+
+    public void setParcourt_termine(boolean parcourt_termine) {
+        this.parcourt_termine = parcourt_termine;
     }
 }

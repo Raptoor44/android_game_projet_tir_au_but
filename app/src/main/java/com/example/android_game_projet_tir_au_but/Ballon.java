@@ -6,10 +6,10 @@ import android.widget.ImageView;
 public class Ballon {
     private ImageView view;
 
-    public Ballon(MainActivity mainActivity) {
+    public Ballon(Game game) {
 
         view = null;
-        this.view = new ImageView(mainActivity);
+        this.view = new ImageView(game);
         this.view.setBackgroundResource(R.drawable._0193_1_serviette_en_papier_carre_ballon_de_foot);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(50, 50);
         this.view.setLayoutParams(params);
@@ -17,7 +17,7 @@ public class Ballon {
         this.view.setX(500);
         this.view.setY(1300);
 
-        mainActivity.getFenetrePrincipale().addView(view);
+        game.getFenetrePrincipale().addView(view);
 
     }
     public void debut(){

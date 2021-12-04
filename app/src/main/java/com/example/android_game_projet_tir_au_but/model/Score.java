@@ -1,10 +1,18 @@
 package com.example.android_game_projet_tir_au_but.model;
 
-public class Score {
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 
-    private static int score;
+public class Score implements Serializable {
+
+    private int score;
+    private Date date;
     private static int meilleur_score;
 
+    public Score() {
+        this.date = Calendar.getInstance().getTime();
+    }
 
     public int getScore() {
         return score;
@@ -23,5 +31,7 @@ public class Score {
         return meilleur_score;
     }
 
-
+    public Date getDate() {
+        return date;
+    }
 }
