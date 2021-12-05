@@ -10,7 +10,7 @@ public class Ballon {
 
         view = null;
         this.view = new ImageView(game);
-        this.view.setBackgroundResource(R.drawable._0193_1_serviette_en_papier_carre_ballon_de_foot);
+        this.view.setBackgroundResource(R.drawable.ballon);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(50, 50);
         this.view.setLayoutParams(params);
 

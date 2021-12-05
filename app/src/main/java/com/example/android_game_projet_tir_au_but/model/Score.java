@@ -8,7 +8,7 @@ public class Score implements Serializable {
 
     private int score;
     private Date date;
-    private static int meilleur_score;
+    private static int meilleurScore;
 
     public Score() {
         this.date = Calendar.getInstance().getTime();
@@ -20,15 +20,15 @@ public class Score implements Serializable {
 
     public void setScore() {
 
-        if (score > meilleur_score) {
-            meilleur_score = score;
+        if (score > meilleurScore) {
+            meilleurScore = score;
         }
 
         score = score + 1;
     }
 
-    public static int getMeilleur_score() {
-        return meilleur_score;
+    public static int getMeilleurScore() {
+        return meilleurScore;
     }
 
     public Date getDate() {

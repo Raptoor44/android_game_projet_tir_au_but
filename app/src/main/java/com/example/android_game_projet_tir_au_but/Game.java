@@ -5,6 +5,7 @@ import androidx.core.view.GestureDetectorCompat;
 
 import android.annotation.SuppressLint;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -18,8 +19,6 @@ import com.example.android_game_projet_tir_au_but.Tools.Serializer;
 import com.example.android_game_projet_tir_au_but.model.ListScores;
 import com.example.android_game_projet_tir_au_but.model.Score;
 
-import java.io.Serializable;
-import java.security.Provider;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -36,12 +35,12 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
     private RelativeLayout fenetrePrincipale;
 
     //init Thread
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService mouvementBallonThread = Executors.newScheduledThreadPool(1);
 
-    private final ScheduledExecutorService gardien = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService mouvementGardiensThread = Executors.newScheduledThreadPool(1);
     //init activation thread
-    private boolean thread_bouger_ballon = false;
-    private boolean thread_gardien = false;
+    private boolean booleanMouvementBallonThread = false;
+    private boolean booleanMouvementGardiensThread = false;
 
 
     //Variables de vitesse de ballon :
@@ -50,8 +49,8 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
 
 
     //init bande droite et gauche
-    private ImageView bande_droite;
-    private ImageView bande_gauche;
+    private ImageView bandeDroite;
+    private ImageView bandeGauche;
 
     //init list gardiens
 
@@ -62,7 +61,7 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
     private ImageView but;
 
     //Autres
-
+    private int i = 0;
 
     //Scores
     private TextView score_courant;
@@ -80,16 +79,16 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
         this.fenetrePrincipale = findViewById(R.id.fenetre_principale);
 
         //init thread
-        gardien.scheduleAtFixedRate(mouvement_gardien, 10, 10, TimeUnit.MILLISECONDS);
-        scheduler.scheduleAtFixedRate(lancer_ballon, 30, 30, TimeUnit.MILLISECONDS);
+        mouvementGardiensThread.scheduleAtFixedRate(mouvementGardien, 5, 5, TimeUnit.MILLISECONDS);
+        mouvementBallonThread.scheduleAtFixedRate(lancerBallon, 15, 15, TimeUnit.MILLISECONDS);
 
         //init ballon
 
         ballon = new Ballon(this);
 
         //init bandes
-        this.bande_droite = findViewById(R.id.id_bande_droite);
-        this.bande_gauche = findViewById(R.id.id_bande_gauche);
+        this.bandeDroite = findViewById(R.id.id_bande_droite);
+        this.bandeGauche = findViewById(R.id.id_bande_gauche);
 
         //init gardien
 
@@ -109,32 +108,32 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
         //init affichage score
         this.score_courant = findViewById(R.id.id_score_courant);
 
-        actualiser_score();
+        actualiserScore();
 
     }
 
 
-    public Runnable mouvement_gardien = new Runnable() {
+    public Runnable mouvementGardien = new Runnable() {
         @Override
 
         public void run() {
-            if (thread_gardien) {
+            if (booleanMouvementGardiensThread) {
 
                 int x = 5;
 
                 for (Gardien gardien_1 : gardiens.getGardiens()) {
                     gardien_1.getView().post(() -> {
 
-                        Log.e("Vitesse gardien ", "" + gardien_1.getVitesse_gardien());
-                        if (!gardien_1.isParcourt_termine()) {
-                            gardien_1.setX(gardien_1.getX() + (x + gardien_1.getVitesse_gardien()));
+
+                        if (!gardien_1.isParcourtTermine()) {
+                            gardien_1.setX(gardien_1.getX() + (x + gardien_1.getVitesseGardien()));
                             if (gardien_1.getX() >= 1000) {
-                                gardien_1.setParcourt_termine(true);
+                                gardien_1.setParcourtTermine(true);
                             }
                         } else {
-                            gardien_1.setX(gardien_1.getX() - (x + gardien_1.getVitesse_gardien()));
+                            gardien_1.setX(gardien_1.getX() - (x + gardien_1.getVitesseGardien()));
                             if (gardien_1.getX() <= 0) {
-                                gardien_1.setParcourt_termine(false);
+                                gardien_1.setParcourtTermine(false);
                             }
                         }
                     });
@@ -146,11 +145,11 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
         }
     };
 
-    public Runnable lancer_ballon = new Runnable() {
+    public Runnable lancerBallon = new Runnable() {
         @Override
         public void run() {
 
-            if (thread_bouger_ballon) {
+            if (booleanMouvementBallonThread) {
 
 
                 ballon.getView().post(() -> {
@@ -165,7 +164,7 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
                         gardien_1.getView().post(() -> {
                             if (isCollisionDetected(gardien_1.getView(), ballon.getView())) {
 
-                                colision_non_but();
+                                collisionNonBut();
                                 enregistrerScore();
 
                             }
@@ -181,16 +180,30 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
                         velocityY = 0;
 
                         score.setScore();
-                        actualiser_score();
+                        actualiserScore();
 
-                        thread_gardien = false;
-                        thread_bouger_ballon = false;
 
+                        booleanMouvementBallonThread = false;
+
+                        //Gestion du son
+                        if (Gardien.getNbInstance() == 5 ||
+                                Gardien.getNbInstance() == 10
+                                || Gardien.getNbInstance() == 15
+                                || Gardien.getNbInstance() == 20
+                                || Gardien.getNbInstance() == 25) {
+                            jouerSonGoal();
+                        }
+
+                        i = 0;
                         for (Gardien gardien_1 : gardiens.getGardiens()) {
 
                             gardien_1.getView().post(() -> {
-                                gardien_1.augmenter();
-                                colision_non_but();
+
+
+                                gardien_1.augmenter(i);
+                                collisionNonBut();
+
+                                i++;
 
                             });
 
@@ -201,13 +214,13 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
 
 
                     //Detection de poteau
-                    if (isCollisionDetected(ballon.getView(), bande_gauche)) {
-                        colision_non_but();
+                    if (isCollisionDetected(ballon.getView(), bandeGauche)) {
+                        collisionNonBut();
                         enregistrerScore();
                     }
 
-                    if (isCollisionDetected(ballon.getView(), bande_droite)) {
-                        colision_non_but();
+                    if (isCollisionDetected(ballon.getView(), bandeDroite)) {
+                        collisionNonBut();
                         enregistrerScore();
                     }
 
@@ -217,13 +230,18 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
         }
     };
 
+    private void jouerSonGoal() {
+        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.goal);
+        mediaPlayer.start();
+    }
+
     @SuppressLint("SetTextI18n")
-    private void actualiser_score() {
+    private void actualiserScore() {
         score_courant.setText("Votre score actuel : " + score.getScore());
     }
 
 
-    private void colision_non_but() {
+    private void collisionNonBut() {
 
         velocityX = 0;
         velocityY = 0;
@@ -232,7 +250,7 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
         ballon.debut();
 
 
-        thread_bouger_ballon = false;
+        booleanMouvementBallonThread = false;
     }
 
     private void enregistrerScore() {
@@ -241,9 +259,23 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
         Serializer.serialize(file_name, ListScores.getScores(), getApplicationContext());
         score = null;
         score = new Score();
-        actualiser_score();
+        actualiserScore();
 
 
+        for (int i = 0; i < gardiens.getGardiens().size(); i++) {
+            this.fenetrePrincipale.removeView(gardiens.getGardiens().get(i).getView());
+
+
+
+
+
+        }
+        Gardien gardien_1 = new Gardien(this, gardiens.getGardiens().get(0).getX());
+        gardiens.getGardiens().clear();
+
+        gardiens.add(gardien_1);
+
+        Gardien.resetStatic();
     }
 
     @Override
@@ -289,12 +321,12 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float velocityX_, float velocityY_) {
 
-        this.velocityX = velocityX_ / 100;
-        this.velocityY = velocityY_ / 100;
+        this.velocityX = velocityX_ / 500;
+        this.velocityY = velocityY_ / 500;
 
 
-        this.thread_bouger_ballon = true;
-        this.thread_gardien = true;
+        this.booleanMouvementBallonThread = true;
+        this.booleanMouvementGardiensThread = true;
 
         return true;
 
@@ -325,21 +357,21 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
         return velocityY;
     }
 
-    public ImageView getBande_droite() {
-        return bande_droite;
+    public ImageView getBandeDroite() {
+        return bandeDroite;
     }
 
-    public ImageView getBande_gauche() {
-        return bande_gauche;
+    public ImageView getBandeGauche() {
+        return bandeGauche;
     }
 
 
-    public Runnable getMouvement_gardien() {
-        return mouvement_gardien;
+    public Runnable getMouvementGardien() {
+        return mouvementGardien;
     }
 
-    public Runnable getLancer_ballon() {
-        return lancer_ballon;
+    public Runnable getLancerBallon() {
+        return lancerBallon;
     }
 
     public void creer_ballon() {
@@ -368,5 +400,9 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
 
     public ListGardiens getGardiens() {
         return gardiens;
+    }
+
+    public ScheduledExecutorService getMouvementGardiensThread() {
+        return mouvementGardiensThread;
     }
 }

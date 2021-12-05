@@ -7,10 +7,13 @@
     tools:context=".MainActivity">
 
     <FrameLayout
+        android:id="@+id/frameLayout3"
         android:layout_width="409dp"
         android:layout_height="729dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,7 +32,7 @@
 
                 <Button
                     android:id="@+id/id_button_jouer"
-                    android:layout_width="match_parent"
+                    android:layout_width="353dp"
                     android:layout_height="wrap_content"
                     android:text="Jouer" />
             </FrameLayout>
@@ -40,7 +43,7 @@
 
                 <Button
                     android:id="@+id/id_button_voir_scores"
-                    android:layout_width="match_parent"
+                    android:layout_width="356dp"
                     android:layout_height="wrap_content"
                     android:text="Voir les scores" />
             </FrameLayout>

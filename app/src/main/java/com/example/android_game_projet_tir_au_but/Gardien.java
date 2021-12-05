@@ -6,67 +6,89 @@ import android.widget.ImageView;
 public class Gardien {
 
     private final ImageView main;
-    private static int nb_instance = 0;
-    private static int nb_gardien = 1;
-    private static int nb_grande = 0;
-    private int vitesse_gardien;
+    private static int nbInstance = 0;
+    private static int nbGardien = 1;
+    private static int nbGrande = 0;
+    private int vitesseGardien;
     private final Game game;
-    private boolean parcourt_termine = false;
+    private boolean parcourtTermine = false;
 
 
-    public Gardien(Game game) {
+    public Gardien(Game game) { // Constructeur d'ajout du premier gardien
 
         this.game = game;
 
 
         this.main = new ImageView(game);
         this.main.setBackgroundResource(R.drawable.jersey_viscose_uni_couleur_noir_profond);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100 + nb_instance * 10, 20);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100, 20);
         this.main.setLayoutParams(params);
 
 
-        this.main.setY(400 + nb_gardien * 100);
+        this.main.setY(400 + nbGardien * 100);
 
 
         game.getFenetrePrincipale().addView(main);
 
 
-        nb_instance++;
+        nbInstance++;
 
 
     }
 
-    public Gardien(Game game, float X) {
+    public Gardien(Game game, int x) { // Constructeur d'ajout du premier gardien
 
         this.game = game;
 
 
         this.main = new ImageView(game);
         this.main.setBackgroundResource(R.drawable.jersey_viscose_uni_couleur_noir_profond);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100 + nb_instance * 10, 20);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100, 20);
         this.main.setLayoutParams(params);
 
 
-        this.main.setY(400 + nb_gardien * 100);
+        this.main.setY(400 + nbGardien * 100);
+        this.main.setX(x);
+
+        game.getFenetrePrincipale().addView(main);
+
+
+        nbInstance++;
+
+
+    }
+
+    public Gardien(Game game, float X) {//Constructeur d'ajout d'un gardien
+
+        this.game = game;
+
+
+        this.main = new ImageView(game);
+        this.main.setBackgroundResource(R.drawable.jersey_viscose_uni_couleur_noir_profond);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100, 20);
+        this.main.setLayoutParams(params);
+
+
+        this.main.setY(400 + nbGardien * 100);
         this.main.setX(X + 50);
 
         game.getFenetrePrincipale().addView(main);
 
 
-        nb_instance++;
+        nbInstance++;
 
-        vitesse_gardien = (int) (Math.random() * 10);
+        vitesseGardien = (int) (Math.random() * 2);
 
     }
 
-    public Gardien(Game game, float Y, float X, int vitesse_gardien, boolean termine) {
+    public Gardien(Game game, float Y, float X, int vitesse_gardien, boolean termine, int width) { // Constructeur d'augmentation des gardiens
 
         this.game = game;
 
 
         this.main = new ImageView(game);
         this.main.setBackgroundResource(R.drawable.jersey_viscose_uni_couleur_noir_profond);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100 + nb_instance * 10, 20);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(width + 20, 20);
         this.main.setLayoutParams(params);
 
 
@@ -76,12 +98,10 @@ public class Gardien {
 
         game.getFenetrePrincipale().addView(main);
 
-        this.vitesse_gardien = vitesse_gardien;
-        this.setParcourt_termine(termine);
+        this.vitesseGardien = vitesse_gardien;
+        this.setParcourtTermine(termine);
 
-        nb_instance++;
-
-
+        nbInstance++;
 
 
     }
@@ -110,13 +130,13 @@ public class Gardien {
         return main;
     }
 
-    public void augmenter() {
+    public void augmenter(int i) {
 
 
-        nb_grande++;
-        if (nb_grande >= 10) {
-            nb_grande = 0;
-            nb_gardien++;
+        nbGrande++;
+        if (nbGrande >= 10 + i * 10) { //le i *10 prend en compte le nombre croissant de gardiens.
+            nbGrande = 0;
+            nbGardien++;
             game.getGardiens().add(new Gardien(this.game, this.getX()));
 
         }
@@ -126,35 +146,46 @@ public class Gardien {
         game.getGardiens().add(new Gardien(this.game,
                 this.getView().getY(),
                 this.getView().getX(),
-                this.vitesse_gardien, this.parcourt_termine));
+                this.vitesseGardien,
+                this.parcourtTermine,
+                this.getView().getWidth()));
 
-
-        nb_instance++;
+        //this.game.getGardien().scheduleAtFixedRate(this.game.getMouvement_gardien(), 10, 10, TimeUnit.MILLISECONDS);
+        nbInstance++;
 
 
     }
 
-    public static int getNb_gardien() {
-        return nb_gardien;
+    public static int getNbGardien() {
+        return nbGardien;
     }
 
-    public static int getNb_grande() {
-        return nb_grande;
+    public static int getNbGrande() {
+        return nbGrande;
     }
 
-    public static int getNb_instance() {
-        return nb_instance;
+    public static int getNbInstance() {
+        return nbInstance;
     }
 
-    public int getVitesse_gardien() {
-        return vitesse_gardien;
+    public int getVitesseGardien() {
+        return vitesseGardien;
     }
 
-    public boolean isParcourt_termine() {
-        return parcourt_termine;
+    public boolean isParcourtTermine() {
+        return parcourtTermine;
     }
 
-    public void setParcourt_termine(boolean parcourt_termine) {
-        this.parcourt_termine = parcourt_termine;
+    public void setParcourtTermine(boolean parcourtTermine) {
+        this.parcourtTermine = parcourtTermine;
+    }
+
+    public static void resetStatic() {
+
+
+        nbInstance = 0;
+        nbGardien = 0;
+        nbGrande = 0;
+
     }
 }
