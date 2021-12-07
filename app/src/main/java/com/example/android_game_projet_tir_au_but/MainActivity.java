@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity  {
 
     private Button jouer;
     private Button voir_scores;
+    private Button manuelUtilisation;
     //File Serializer
     private String file_name = "Activity";
 
@@ -50,6 +51,17 @@ public class MainActivity extends AppCompatActivity  {
                 finish();
             }
         });
+
+        this.manuelUtilisation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ManuelUtilisation.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
 
         ListScores.setScores((ArrayList<Score>) Serializer.deSerialize(file_name, getApplicationContext()));
 

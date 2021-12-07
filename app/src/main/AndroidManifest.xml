@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Android_game_projet_tir_au_but">
         <activity
+            android:name=".ManuelUtilisation"
+            android:exported="false" />
+        <activity
             android:name=".TableauScore"
             android:exported="true" />
         <activity
