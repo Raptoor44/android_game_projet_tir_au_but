@@ -1,7 +1,6 @@
 package com.example.android_game_projet_tir_au_but.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListScores implements Serializable {

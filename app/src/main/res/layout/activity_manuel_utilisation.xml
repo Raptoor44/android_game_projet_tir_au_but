@@ -47,13 +47,14 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="308dp"
-        android:layout_height="0dp"
+        android:layout_width="309dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="498dp"
         android:text="BUT DU JEU :"
         android:textColor="#F44336"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

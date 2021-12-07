@@ -1,20 +1,16 @@
 package com.example.android_game_projet_tir_au_but;
 
-import static com.example.android_game_projet_tir_au_but.Tools.Serializer.deSerialize;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.android_game_projet_tir_au_but.Tools.Serializer;
 import com.example.android_game_projet_tir_au_but.model.ListScores;
 import com.example.android_game_projet_tir_au_but.model.Score;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +47,8 @@ public class MainActivity extends AppCompatActivity  {
                 finish();
             }
         });
+
+        this.manuelUtilisation = findViewById(R.id.id_activity_main2_manuelutilisation);
 
         this.manuelUtilisation.setOnClickListener(new View.OnClickListener() {
             @Override

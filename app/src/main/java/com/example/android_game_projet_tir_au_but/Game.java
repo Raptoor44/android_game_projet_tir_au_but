@@ -1,9 +1,7 @@
 package com.example.android_game_projet_tir_au_but;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GestureDetectorCompat;
-
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -15,12 +13,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GestureDetectorCompat;
+
 import com.example.android_game_projet_tir_au_but.Tools.Serializer;
 import com.example.android_game_projet_tir_au_but.model.ListScores;
 import com.example.android_game_projet_tir_au_but.model.Score;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -68,7 +67,6 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
     //Scores
     private TextView score_courant;
     private Score score;
-    private String file_name = "Activity";
 
 
     @Override
@@ -264,6 +262,7 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
 
 
         ListScores.getScores().add(this.score);
+        String file_name = "Activity";
         Serializer.serialize(file_name, ListScores.getScores(), getApplicationContext());
 
 
@@ -334,8 +333,8 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float velocityX_, float velocityY_) {
 
-        this.velocityX = velocityX_ / 500;
-        this.velocityY = velocityY_ / 500;
+        this.velocityX = velocityX_ / 300;
+        this.velocityY = velocityY_ / 300;
 
 
         this.booleanMouvementBallonThread = true;
@@ -417,5 +416,12 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
 
     public ScheduledExecutorService getMouvementGardiensThread() {
         return mouvementGardiensThread;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

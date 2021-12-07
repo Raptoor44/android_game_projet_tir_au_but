@@ -1,7 +1,5 @@
 package com.example.android_game_projet_tir_au_but.model;
 
-import android.util.Log;
-
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,7 +7,7 @@ import java.util.Date;
 public class Score implements Serializable {
 
     private int score;
-    private Date date;
+    private final Date date;
     private static int meilleurScore = 0;
 
     public Score() {
@@ -36,6 +34,7 @@ public class Score implements Serializable {
     }
 
     public static void acctualiserMeilleurScore(){
+        meilleurScore = 0;
         for(Score s : ListScores.getScores()){
             if(s.getScore() > Score.getMeilleurScore()){
                 meilleurScore = s.getScore();

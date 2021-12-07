@@ -42,11 +42,11 @@
                     android:layout_width="99dp"
                     android:layout_height="match_parent">
 
-                    <ImageButton
+                    <Button
                         android:id="@+id/id_adapter_score_delete_button"
-                        android:layout_width="95dp"
-                        android:layout_height="match_parent"
-                        app:srcCompat="@android:drawable/ic_delete" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Supprimer" />
                 </FrameLayout>
             </LinearLayout>
 
