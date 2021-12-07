@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/id_adapter_score_layout_"
+        android:layout_width="0dp"
+        android:layout_height="167dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="172dp"
+                android:layout_height="70dp"
+                android:text="Score :" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/id_text_score_date"
+                    android:layout_width="140dp"
+                    android:layout_height="80dp" />
+
+                <TextView
+                    android:id="@+id/id_adapter_score_score"
+                    android:layout_width="117dp"
+                    android:layout_height="79dp" />
+
+                <FrameLayout
+                    android:layout_width="99dp"
+                    android:layout_height="match_parent">
+
+                    <ImageButton
+                        android:id="@+id/id_adapter_score_delete_button"
+                        android:layout_width="95dp"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@android:drawable/ic_delete" />
+                </FrameLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
