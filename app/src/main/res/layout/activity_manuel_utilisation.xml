@@ -26,7 +26,7 @@
         android:layout_marginTop="56dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="9dp"
-        android:text="Le but du jeu est très simple : vous devez essayer de marquer un maximum de points en tirant dans les buts. Attention, deux poteaux et des gardiens extrément féroce et imprévisible seront là pour vous en empêcher !"
+        android:text="Le but du jeu est très simple : vous devez essayer de marquer un maximum de points en tirant dans les buts (Glisser avec votre doigt) . Attention, deux poteaux et des gardiens extrêmement féroce et imprévisible seront là pour vous en empêcher !"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"

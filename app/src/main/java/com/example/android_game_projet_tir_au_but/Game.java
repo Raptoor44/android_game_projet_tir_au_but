@@ -53,6 +53,10 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
     private ImageView bandeDroite;
     private ImageView bandeGauche;
 
+    //init bords
+    private ImageView bordDroit;
+    private ImageView bordGauche;
+    private ImageView bordBas;
     //init list gardiens
 
     private ListGardiens gardiens;
@@ -80,7 +84,8 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
 
         //init thread
         mouvementGardiensThread.scheduleAtFixedRate(mouvementGardien, 5, 5, TimeUnit.MILLISECONDS);
-        mouvementBallonThread.scheduleAtFixedRate(lancerBallon, 20, 20, TimeUnit.MILLISECONDS);
+        mouvementBallonThread.scheduleAtFixedRate(lancerBallon, 17, 17, TimeUnit.MILLISECONDS);
+
 
         //init ballon
 
@@ -89,6 +94,12 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
         //init bandes
         this.bandeDroite = findViewById(R.id.id_bande_droite);
         this.bandeGauche = findViewById(R.id.id_bande_gauche);
+
+        //init bords
+        this.bordBas = findViewById(R.id.id_activity_game_bas);
+        this.bordDroit = findViewById(R.id.id_activity_game_droit);
+        this.bordGauche = findViewById(R.id.id_activity_game_gauche);
+
 
         //init gardien
 
@@ -107,7 +118,6 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
 
         //init affichage score
         this.score_courant = findViewById(R.id.id_score_courant);
-
 
 
         //Score
@@ -178,57 +188,85 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
 
                     }
 
+                    but.post(() -> {
+                        //DETECTIONS DE BUT
+                        if (isCollisionDetected(ballon.getView(), but)) {
+                            velocityX = 0;
+                            velocityY = 0;
 
-                    //DETECTIONS DE BUT
-                    if (isCollisionDetected(ballon.getView(), but)) {
-                        velocityX = 0;
-                        velocityY = 0;
-
-                        score.setScore();
-                        actualiserScore();
+                            score.setScore();
+                            actualiserScore();
 
 
-                        booleanMouvementBallonThread = false;
+                            booleanMouvementBallonThread = false;
 
-                        //Gestion du son
-                        if (Gardien.getNbInstance() == 5 ||
-                                Gardien.getNbInstance() == 10
-                                || Gardien.getNbInstance() == 15
-                                || Gardien.getNbInstance() == 20
-                                || Gardien.getNbInstance() == 25) {
-                            jouerSonGoal();
+                            //Gestion du son
+                            if (Gardien.getNbInstance() == 5 ||
+                                    Gardien.getNbInstance() == 10
+                                    || Gardien.getNbInstance() == 15
+                                    || Gardien.getNbInstance() == 20
+                                    || Gardien.getNbInstance() == 25) {
+                                jouerSonGoal();
+                            }
+
+                            i = 0;
+                            for (Gardien gardien_1 : gardiens.getGardiens()) {
+
+                                gardien_1.getView().post(() -> {
+
+
+                                    gardien_1.augmenter(i);
+                                    collisionNonBut();
+
+                                    i++;
+
+                                });
+
+                            }
+
+
+                        }
+                    });
+
+
+                    bandeGauche.post(() -> {
+                        //Detection de poteau
+                        if (isCollisionDetected(ballon.getView(), bandeGauche)) {
+                            collisionNonBut();
+                            enregistrerScore();
                         }
 
-                        i = 0;
-                        for (Gardien gardien_1 : gardiens.getGardiens()) {
-
-                            gardien_1.getView().post(() -> {
-
-
-                                gardien_1.augmenter(i);
-                                collisionNonBut();
-
-                                i++;
-
-                            });
-
+                    });
+                    bandeDroite.post(() -> {
+                        if (isCollisionDetected(ballon.getView(), bandeDroite)) {
+                            collisionNonBut();
+                            enregistrerScore();
                         }
+                    });
+
+                    //Détections bords
+
+                    bordBas.post(() -> {
+                        if (isCollisionDetected(ballon.getView(), bordBas)) {
+                            collisionNonBut();
+                            enregistrerScore();
+                        }
+                    });
 
 
-                    }
+                    bordDroit.post(() -> {
+                        if (isCollisionDetected(ballon.getView(), bordDroit)) {
+                            collisionNonBut();
+                            enregistrerScore();
+                        }
+                    });
 
-
-                    //Detection de poteau
-                    if (isCollisionDetected(ballon.getView(), bandeGauche)) {
-                        collisionNonBut();
-                        enregistrerScore();
-                    }
-
-                    if (isCollisionDetected(ballon.getView(), bandeDroite)) {
-                        collisionNonBut();
-                        enregistrerScore();
-                    }
-
+                    bordGauche.post(() -> {
+                        if (isCollisionDetected(ballon.getView(), bordGauche)) {
+                            collisionNonBut();
+                            enregistrerScore();
+                        }
+                    });
                 });
 
             }
@@ -275,9 +313,6 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
             this.fenetrePrincipale.removeView(gardiens.getGardiens().get(i).getView());
 
 
-
-
-
         }
         Gardien gardien_1 = new Gardien(this, gardiens.getGardiens().get(0).getX());
         gardiens.getGardiens().clear();
@@ -285,7 +320,6 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
         gardiens.add(gardien_1);
 
         Gardien.resetStatic();
-
 
 
     }
@@ -333,8 +367,8 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float velocityX_, float velocityY_) {
 
-        this.velocityX = velocityX_ / 300;
-        this.velocityY = velocityY_ / 300;
+        this.velocityX = velocityX_ / 500;
+        this.velocityY = velocityY_ / 500;
 
 
         this.booleanMouvementBallonThread = true;
