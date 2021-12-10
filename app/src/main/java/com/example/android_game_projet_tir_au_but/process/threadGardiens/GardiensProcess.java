@@ -1,11 +1,11 @@
-package com.example.android_game_projet_tir_au_but.process;
+package com.example.android_game_projet_tir_au_but.process.threadGardiens;
 
 import com.example.android_game_projet_tir_au_but.controllerView.Game;
 import com.example.android_game_projet_tir_au_but.model.Gardien;
 
 public class GardiensProcess {
 
-    private Game game;
+    private final Game game;
 
     public GardiensProcess(Game game) {
         this.game = game;
@@ -31,5 +31,14 @@ public class GardiensProcess {
 
 
         }
+    }
+
+    public void nouveauPremierGardien() {
+        Gardien gardienUn = new Gardien(this.game);
+        this.game.getGardiens().getGardiens().clear();
+
+        this.game.getGardiens().add(gardienUn);
+
+        Gardien.resetStatic();
     }
 }

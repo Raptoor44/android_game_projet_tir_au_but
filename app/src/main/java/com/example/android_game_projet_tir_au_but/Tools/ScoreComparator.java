@@ -13,12 +13,6 @@ public class ScoreComparator implements Comparator<Score> {
         int a = s1.getScore();
         int b = s2.getScore();
 
-        if (a > b) {
-            return -1;
-        } else if (a == b) {
-            return 0;
-        } else {
-            return 1;
-        }
+        return Integer.compare(b, a);
     }
 }

@@ -11,9 +11,7 @@
         android:layout_width="353dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:layout_marginBottom="324dp"
         android:text="Jouer"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,13 +21,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="236dp"
         android:layout_marginEnd="26dp"
+        android:layout_marginBottom="121dp"
         android:text="Voir les scores"
+        app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/id_button_jouer" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/id_activity_main2_manuelutilisation"
@@ -45,17 +45,15 @@
         app:layout_constraintTop_toTopOf="@+id/id_button_jouer" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_button_jouer"
+        app:layout_constraintTop_toBottomOf="@+id/id_button_voir_scores"
         app:srcCompat="@drawable/lemans_universite_440x440" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

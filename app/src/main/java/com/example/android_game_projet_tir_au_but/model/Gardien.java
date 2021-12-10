@@ -11,13 +11,12 @@ public class Gardien {
     private final ImageView view;
     private static int nbInstance = 0;
     private static int nbGardien = 1;
-    private static int nbGrande = 0;
-    private int vitesseGardien;
+    private int vitesseGardien = 0;
     private final Game game;
     private boolean parcourtTermine = false;
 
 
-    public Gardien(Game game) { // Constructeur d'ajout du premier gardien
+    public Gardien(Game game) { // Constructeur d'ajout du premier gardien, ce constucteur permet d'avoir la même disposition en y à chaque fois.
 
         this.game = game;
 
@@ -28,7 +27,7 @@ public class Gardien {
         this.view.setLayoutParams(params);
 
 
-        this.view.setY(400 + nbGardien * 100);
+        this.view.setY(400);
 
 
         game.getFenetrePrincipale().addView(view);
@@ -59,12 +58,8 @@ public class Gardien {
 
         nbInstance++;
 
-        if (nbInstance == 0) {
-            vitesseGardien = 0;
-            this.view.setX(X);
-        } else {
-            vitesseGardien = (int) (Math.random() * 2);
-        }
+
+        vitesseGardien = (int) (Math.random() * 2);
 
 
     }
@@ -88,6 +83,8 @@ public class Gardien {
 
         this.vitesseGardien = vitesse_gardien;
         this.setParcourtTermine(termine);
+
+        vitesseGardien = (int) (Math.random() * 2);
 
         nbInstance++;
 
@@ -122,12 +119,13 @@ public class Gardien {
 
 
         //Permet en dessous d'ajouter des gardiens.
-        nbGrande++;
-        if (nbGrande >= 10 + game.getNbGardiensActivites() * 10) { //le i *10 prend en compte le nombre croissant de gardiens.
-            nbGrande = 0;
+
+        if (NbGardiens.getNbGardiens() >= 10) { //le i *10 prend en compte le nombre croissant de gardiens.
+
             nbGardien++;
             game.getGardiens().add(new Gardien(this.game, this.getX()));
             game.setNbGardiensActivites(game.getNbGardiensActivites() + 1);
+            NbGardiens.setNbGardiens(0);
 
         }
 
@@ -147,13 +145,6 @@ public class Gardien {
 
     }
 
-    public static int getNbGardien() {
-        return nbGardien;
-    }
-
-    public static int getNbGrande() {
-        return nbGrande;
-    }
 
     public static int getNbInstance() {
         return nbInstance;
@@ -180,7 +171,7 @@ public class Gardien {
 
         nbInstance = 0;
         nbGardien = 0;
-        nbGrande = 0;
+
 
     }
 }

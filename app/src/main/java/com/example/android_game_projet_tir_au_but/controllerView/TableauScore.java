@@ -19,8 +19,6 @@ import com.example.android_game_projet_tir_au_but.model.AdapterScores;
 import com.example.android_game_projet_tir_au_but.model.ListScores;
 import com.example.android_game_projet_tir_au_but.model.Score;
 
-import java.util.List;
-
 public class TableauScore extends AppCompatActivity {
 
 

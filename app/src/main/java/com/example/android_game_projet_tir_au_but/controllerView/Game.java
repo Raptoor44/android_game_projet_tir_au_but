@@ -17,9 +17,9 @@ import com.example.android_game_projet_tir_au_but.model.Ballon;
 import com.example.android_game_projet_tir_au_but.model.Gardien;
 import com.example.android_game_projet_tir_au_but.model.ListGardiens;
 import com.example.android_game_projet_tir_au_but.model.Score;
-import com.example.android_game_projet_tir_au_but.process.ButProcess;
-import com.example.android_game_projet_tir_au_but.process.GardiensProcess;
-import com.example.android_game_projet_tir_au_but.process.ScoreProcess;
+import com.example.android_game_projet_tir_au_but.process.threadBallon.BallonProcess;
+import com.example.android_game_projet_tir_au_but.process.threadGardiens.GardiensProcess;
+import com.example.android_game_projet_tir_au_but.process.threadBallon.ScoreProcess;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -28,8 +28,17 @@ import java.util.concurrent.TimeUnit;
 public class Game extends AppCompatActivity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
 
-    private final ButProcess but1 = new ButProcess(this);
-    private Game game;
+    /*
+  Ceci est la classe principale de l'objet qui va simuler le jeu. Au départ la taille de classe n'était
+  pas loin de 500 lignes, j'ai dû pratiquer du refactoring pour respecter le principe objet. (tout ce qui est
+  dans le package process était issu de la classe Game). Maintenant, elle se présente comme une classe qui
+  contient toutes les variables associé à l'activité Game et leurs instanciations avec quelques méthodes.
+  Si vous voulez avoir la classe entière avant le refactoring, je vous invite à
+  regarder dans les branches du github associé à ce projet (voir le fichier .txt que je vous ai fourni.
+     */
+
+
+    private final BallonProcess butProcess = new BallonProcess(this);
 
     private GestureDetectorCompat gestureDetector;
 
@@ -71,7 +80,7 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
     private int nbGardiensActivites = 0;
 
     //Scores
-    private TextView score_courant;
+    private TextView scoreCourant;
     private Score score;
 
 
@@ -127,10 +136,10 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
         //init but
         this.but = findViewById(R.id.id_but);
 
-        game = this;
+        Game game = this;
 
         //init affichage score
-        this.score_courant = findViewById(R.id.id_score_courant);
+        this.scoreCourant = findViewById(R.id.id_score_courant);
 
 
         //Score
@@ -168,7 +177,7 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
             if (booleanMouvementBallonThread) {
 
 
-                ballon.getView().post(but1::tirProcess);
+                ballon.getView().post(butProcess::tirProcess);
 
             }
         }
@@ -176,9 +185,32 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
 
     private void tirProcess() {
 
-        but1.tirProcess();
+        butProcess.tirProcess();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
+
+        ScoreProcess s = new ScoreProcess(this);
+        s.enregistrerScore();
+    }
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float velocityX_, float velocityY_) {
+
+        this.velocityX = velocityX_ / 500;
+        this.velocityY = velocityY_ / 500;
+
+
+        this.booleanMouvementBallonThread = true;
+        this.booleanMouvementGardiensThread = true;
+
+        return true;
+
+    }
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent motionEvent) {
@@ -220,19 +252,6 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
 
     }
 
-    @Override
-    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float velocityX_, float velocityY_) {
-
-        this.velocityX = velocityX_ / 500;
-        this.velocityY = velocityY_ / 500;
-
-
-        this.booleanMouvementBallonThread = true;
-        this.booleanMouvementGardiensThread = true;
-
-        return true;
-
-    }
 
     public boolean onTouchEvent(MotionEvent event) {
         gestureDetector.onTouchEvent(event);
@@ -257,17 +276,12 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
     }
 
 
-    public void creerBallon() {
-        ballon = new Ballon(this);
-    }
-
-
     public ImageView getBut() {
         return but;
     }
 
-    public TextView getScore_courant() {
-        return score_courant;
+    public TextView getScoreCourant() {
+        return scoreCourant;
     }
 
     public Score getScore() {
@@ -285,10 +299,6 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
 
     public void setNbGardiensActivites(int nbGardiensActivites) {
         this.nbGardiensActivites = nbGardiensActivites;
-    }
-
-    public Game getGame() {
-        return game;
     }
 
 
@@ -314,17 +324,6 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
     }
 
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
-        finish();
-
-        ScoreProcess s = new ScoreProcess(this);
-        s.enregistrerScore();
-    }
-
-
     public void setScore(Score score) {
         this.score = score;
     }
@@ -342,9 +341,6 @@ public class Game extends AppCompatActivity implements GestureDetector.OnGesture
     public void setBooleanMouvementBallonThread(boolean booleanMouvementBallonThread) {
         this.booleanMouvementBallonThread = booleanMouvementBallonThread;
     }
-
-
-
 
 
 }

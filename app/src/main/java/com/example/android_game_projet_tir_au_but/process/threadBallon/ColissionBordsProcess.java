@@ -1,9 +1,9 @@
-package com.example.android_game_projet_tir_au_but.process;
+package com.example.android_game_projet_tir_au_but.process.threadBallon;
 
 public class ColissionBordsProcess {
-    private final ButProcess but;
+    private final BallonProcess but;
 
-    public ColissionBordsProcess(ButProcess but) {
+    public ColissionBordsProcess(BallonProcess but) {
         this.but = but;
     }
 
@@ -11,14 +11,14 @@ public class ColissionBordsProcess {
         but.getGame().getBandeGauche().post(() -> {
             //Detection de poteau
             if (CollisionProcess.isCollisionDetected(but.getGame().getBallon().getView(), but.getGame().getBandeGauche())) {
-                but.getColi().collision();
+                but.getColisionProcess().collision();
                 but.getProcessScore().enregistrerScore();
             }
 
         });
         but.getGame().getBandeDroite().post(() -> {
             if (CollisionProcess.isCollisionDetected(but.getGame().getBallon().getView(), but.getGame().getBandeDroite())) {
-                but.getColi().collision();
+                but.getColisionProcess().collision();
                 but.getProcessScore().enregistrerScore();
             }
         });
@@ -27,7 +27,7 @@ public class ColissionBordsProcess {
 
         but.getGame().getBordBas().post(() -> {
             if (CollisionProcess.isCollisionDetected(but.getGame().getBallon().getView(), but.getGame().getBordBas())) {
-                but.getColi().collision();
+                but.getColisionProcess().collision();
                 but.getProcessScore().enregistrerScore();
             }
         });
@@ -35,14 +35,14 @@ public class ColissionBordsProcess {
 
         but.getGame().getBordDroit().post(() -> {
             if (CollisionProcess.isCollisionDetected(but.getGame().getBallon().getView(), but.getGame().getBordDroit())) {
-                but.getColi().collision();
+                but.getColisionProcess().collision();
                 but.getProcessScore().enregistrerScore();
             }
         });
 
         but.getGame().getBordGauche().post(() -> {
             if (CollisionProcess.isCollisionDetected(but.getGame().getBallon().getView(), but.getGame().getBordGauche())) {
-                but.getColi().collision();
+                but.getColisionProcess().collision();
                 but.getProcessScore().enregistrerScore();
             }
         });

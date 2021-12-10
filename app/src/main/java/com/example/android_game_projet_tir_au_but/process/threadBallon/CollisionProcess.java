@@ -1,4 +1,4 @@
-package com.example.android_game_projet_tir_au_but.process;
+package com.example.android_game_projet_tir_au_but.process.threadBallon;
 
 import android.graphics.Rect;
 import android.util.Log;
@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.example.android_game_projet_tir_au_but.controllerView.Game;
 import com.example.android_game_projet_tir_au_but.model.Gardien;
+import com.example.android_game_projet_tir_au_but.model.NbGardiens;
 
 public class CollisionProcess {
     private Game game;
@@ -39,7 +40,7 @@ public class CollisionProcess {
         game.setBooleanMouvementBallonThread(false);
         game.setNbGardiensActivites(0);
 
-        Gardien.setNbInstance(0);
+
     }
 
 }

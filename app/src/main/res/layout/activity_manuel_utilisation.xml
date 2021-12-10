@@ -10,78 +10,59 @@
         android:id="@+id/id_activity_manuel_utilisation_retour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="86dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="90dp"
         android:text="retour"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="9dp"
+        android:layout_width="355dp"
+        android:layout_height="438dp"
         android:text="Le but du jeu est très simple : vous devez essayer de marquer un maximum de points en tirant dans les buts (Glisser avec votre doigt) . Attention, deux poteaux et des gardiens extrêmement féroce et imprévisible seront là pour vous en empêcher !"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="178dp"
-        android:layout_height="133dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="0dp"
+        android:layout_height="119dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="41dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/id_activity_manuel_utilisation_retour"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
         app:srcCompat="@drawable/lemans_universite_440x440" />
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="309dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="293dp"
+        android:layout_width="316dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="51dp"
         android:text="BUT DU JEU :"
         android:textColor="#F44336"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="411dp"
-        android:layout_height="239dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="158dp"
-        android:text="Realisé par :"
-        android:textColor="#009688"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="317dp"
-        android:layout_height="123dp"
-        android:layout_marginBottom="40dp"
-        android:text="Joachim Guitton"
-        android:textColor="#FF0A0A"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="@+id/textView4" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="291dp"
+        android:layout_height="174dp"
+        android:layout_marginTop="379dp"
+        android:layout_marginBottom="167dp"
+        app:layout_constraintBottom_toTopOf="@+id/id_activity_manuel_utilisation_retour"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/policeclasse" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
