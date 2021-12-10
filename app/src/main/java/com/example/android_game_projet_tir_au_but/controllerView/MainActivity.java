@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         Button voir_scores = findViewById(R.id.id_button_voir_scores);
 
         voir_scores.setOnClickListener(new View.OnClickListener() {
