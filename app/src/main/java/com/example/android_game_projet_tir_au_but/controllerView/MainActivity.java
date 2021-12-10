@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         Button manuelUtilisation = findViewById(R.id.id_activity_main2_manuelutilisation);
 
         manuelUtilisation.setOnClickListener(new View.OnClickListener() {
