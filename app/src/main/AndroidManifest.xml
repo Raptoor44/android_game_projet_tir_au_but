@@ -10,16 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Android_game_projet_tir_au_but">
         <activity
-            android:name=".ManuelUtilisation"
+            android:name=".controllerView.ManuelUtilisation"
             android:exported="false" />
         <activity
-            android:name=".TableauScore"
+            android:name=".controllerView.TableauScore"
             android:exported="true" />
         <activity
-            android:name=".Game"
+            android:name=".controllerView.Game"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".controllerView.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

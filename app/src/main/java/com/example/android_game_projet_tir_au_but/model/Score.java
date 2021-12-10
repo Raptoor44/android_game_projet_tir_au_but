@@ -33,10 +33,10 @@ public class Score implements Serializable {
         return date;
     }
 
-    public static void acctualiserMeilleurScore(){
+    public static void acctualiserMeilleurScore() {
         meilleurScore = 0;
-        for(Score s : ListScores.getScores()){
-            if(s.getScore() > Score.getMeilleurScore()){
+        for (Score s : ListScores.getScores()) {
+            if (s.getScore() > Score.getMeilleurScore()) {
                 meilleurScore = s.getScore();
             }
         }

@@ -8,13 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.android_game_projet_tir_au_but.R;
-import com.example.android_game_projet_tir_au_but.TableauScore;
+import com.example.android_game_projet_tir_au_but.controllerView.TableauScore;
 
 import java.util.List;
 
@@ -75,8 +73,6 @@ public class AdapterScores extends BaseAdapter {
 
         date.setText(String.valueOf(score.getDate()));
         score_number.setText(String.valueOf(score.getScore()));
-
-
 
 
         return convertview;

@@ -1,7 +1,10 @@
-package com.example.android_game_projet_tir_au_but;
+package com.example.android_game_projet_tir_au_but.model;
 
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.example.android_game_projet_tir_au_but.controllerView.Game;
+import com.example.android_game_projet_tir_au_but.R;
 
 public class Ballon {
     private ImageView view;
@@ -20,23 +23,26 @@ public class Ballon {
         game.getFenetrePrincipale().addView(view);
 
     }
-    public void debut(){
+
+    public void debut() {
         this.view.setX(500);
         this.view.setY(1300);
     }
 
-    public void setX(float x){
+    public void setX(float x) {
         view.setX(x);
     }
-    public void setY(float y){
+
+    public void setY(float y) {
         view.setY(y);
     }
 
-    public float getX(){
-      return  view.getX();
+    public float getX() {
+        return view.getX();
     }
-    public float getY(){
-      return  view.getY();
+
+    public float getY() {
+        return view.getY();
     }
 
     public ImageView getView() {

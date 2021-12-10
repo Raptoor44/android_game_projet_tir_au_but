@@ -42,8 +42,6 @@ public class Serializer implements Serializable {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-            } catch (StreamCorruptedException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -1,4 +1,4 @@
-package com.example.android_game_projet_tir_au_but;
+package com.example.android_game_projet_tir_au_but.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +11,12 @@ public class ListGardiens {
         this.gardiens = new ArrayList<>();
     }
 
-    public void remove(Gardien gardien){
+    public void remove(Gardien gardien) {
 
         this.gardiens.remove(gardien);
     }
 
-    public void add(Gardien gardien){
+    public void add(Gardien gardien) {
         this.gardiens.add(gardien);
     }
 

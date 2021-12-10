@@ -1,4 +1,4 @@
-package com.example.android_game_projet_tir_au_but;
+package com.example.android_game_projet_tir_au_but.controllerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.android_game_projet_tir_au_but.R;
 import com.example.android_game_projet_tir_au_but.Tools.Serializer;
 import com.example.android_game_projet_tir_au_but.model.ListScores;
 import com.example.android_game_projet_tir_au_but.model.Score;
@@ -14,21 +15,15 @@ import com.example.android_game_projet_tir_au_but.model.Score;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity  {
-
-    private Button jouer;
-    private Button voir_scores;
-    private Button manuelUtilisation;
-    //File Serializer
-    private String file_name = "Activity";
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        this.jouer = findViewById(R.id.id_button_jouer);
-        this.jouer.setOnClickListener(new View.OnClickListener() {
+        Button jouer = findViewById(R.id.id_button_jouer);
+        jouer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Game.class);
@@ -37,9 +32,9 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
-        this.voir_scores = findViewById(R.id.id_button_voir_scores);
+        Button voir_scores = findViewById(R.id.id_button_voir_scores);
 
-        this.voir_scores.setOnClickListener(new View.OnClickListener() {
+        voir_scores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), TableauScore.class);
@@ -48,9 +43,9 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
-        this.manuelUtilisation = findViewById(R.id.id_activity_main2_manuelutilisation);
+        Button manuelUtilisation = findViewById(R.id.id_activity_main2_manuelutilisation);
 
-        this.manuelUtilisation.setOnClickListener(new View.OnClickListener() {
+        manuelUtilisation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ManuelUtilisation.class);
@@ -60,11 +55,12 @@ public class MainActivity extends AppCompatActivity  {
         });
 
 
-
+        //File Serializer
+        String file_name = "Activity";
         ListScores.setScores((ArrayList<Score>) Serializer.deSerialize(file_name, getApplicationContext()));
 
-        if(ListScores.getScores()==null){
-         List<Score> listPermute = new ArrayList<Score>();
+        if (ListScores.getScores() == null) {
+            List<Score> listPermute = new ArrayList<Score>();
             ListScores.setScores(listPermute);
         }
 
